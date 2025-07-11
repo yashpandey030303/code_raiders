@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Breakdown Assistance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚗 Vehicle Breakdown Help</h1>
+
+  <button onclick="getLocation()">📍 Get My Location</button>
+  <button onclick="requestHelp()">🆘 Request Help</button>
+
+  <div class="status" id="statusBox">
+    <h3>Status: Idle</h3>
+    <p id="locationInfo">Location not acquired</p>
+  </div>
+
+  <script>
+    let userLocation = null;
+
+    function updateStatus(message) {
+      document.getElementById('statusBox').querySelector('h3').textContent = 'Status: ' + message;
+    }
+
+    function getLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        return;
+      }
+
+      updateStatus("Getting location...");
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          userLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+
+          document.getElementById("locationInfo").textContent =
+            `Latitude: ${userLocation.latitude}, Longitude: ${userLocation.longitude}`;
+          updateStatus("Location acquired");
+        },
+        (error) => {
+          updateStatus("Failed to get location");
+          console.error(error);
+        }
+      );
+    }
+
+    function requestHelp() {
+      if (!userLocation) {
+        alert("Please get your location first.");
+        return;
+      }
+
+      updateStatus("Requesting help...");
+
+      // Simulate an API call with timeout
+      setTimeout(() => {
+        updateStatus("Help requested! Nearest mechanic notified.");
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
